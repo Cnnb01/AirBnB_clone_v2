@@ -12,7 +12,7 @@ Base = declarative_base
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), unique=True, nullable=False,
-                             primary_key=True)
+                primary_key=True)
     created_at = Column(DateTime.now(), nullable=False,
                         default=datetime.utcnow())
     updated_at = Column(DateTime.now(), nullable=False,
@@ -24,7 +24,7 @@ class BaseModel:
             if not hasattr(self, k):
                 setattr(self, k, v)
         if not kwargs:
-            self.id= str(uuid.uuid4())
+            self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.utcnow()
         else:
             for key, value in kwargs.items():
