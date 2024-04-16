@@ -39,15 +39,11 @@ class DBStorage:
 
     def new(self, obj):
         """new"""
-        if self.__session:
-            self.__session.add(obj)
-        else:
-            self.__session = scoped_session(sessionmaker(bind=self.__engine))
+        self.__session.add(obj)
 
     def save(self):
         """save"""
-        if self.__session:
-            self.__session.commit()
+        self.__session.commit()
 
     def delete(self, obj=None):
         """delete"""
@@ -56,14 +52,9 @@ class DBStorage:
 
     def reload(self):
         """reload"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
         Base.metadata.create_all(self.__engine)
-        self.__session = scoped_session(sessionmaker(bind=self.__engine,
-                                                     expire_on_commit=False))
+
+        my_session_maker = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
+        my_session = scoped_session(my_session_maker)
+        self.__session = my_session()
