@@ -118,34 +118,37 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        if args not in HBNBCommand.classes:
+        # Extract the class name from the input arguments
+        class_name = args.split(" ")[0]
+        
+        # Check if the class name exists in HBNBCommand.classes
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        if args:
-            args_list = args.split(" ")
-            kwargs = {}
-            for arg in range(1, len(args_list)):
-                key, value = tuple(args_list[arg].split("="))
-                if value[0] == '"':
-                    value = value.strip('"').replace("_", " ")
-                elif "." in value:
-                    try:
-                        value = float(value)
-                    except (ValueError):
-                        continue
-                else:
-                    try:
-                        value = int(value)
-                    except (ValueError):
-                        continue
-                kwargs[key] = value
-            if kwargs == {}:
-                new_instance = HBNBCommand.classes(args_list[0])()
+
+        args_list = args.split(" ")
+        kwargs = {}
+        for arg in args_list[1:]:
+            key, value = arg.split("=")
+            if value[0] == '"':
+                value = value.strip('"').replace("_", " ")
+            elif "." in value:
+                try:
+                    value = float(value)
+                except (ValueError):
+                    continue
             else:
-                new_instance = HBNBCommand.classes(args_list[0])(**kwargs)
-                storage.save()
-                print(new_instance.id)
-                storage.save()
+                try:
+                    value = int(value)
+                except (ValueError):
+                    continue
+            kwargs[key] = value
+        
+        
+        new_instance = HBNBCommand.classes[class_name](**kwargs)
+        storage.save()
+        print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
