@@ -92,4 +92,3 @@ class test_Place(test_basemodel):
         amenity = Amenity()
         place.amenities = amenity
         self.assertIn(amenity, place.amenities)
-        
