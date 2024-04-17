@@ -76,7 +76,8 @@ class TestConsole(unittest.TestCase):
         """Test update command"""
         self.console.onecmd("create State")
         state_id = mock_stdout.getvalue().strip()
-        self.console.onecmd("update State {} name \"California\"".format(state_id))
+        self.console.onecmd("update State {} name \"California\""
+                            .format(state_id))
         state = storage.all()["State." + state_id]
         self.assertEqual(state.name, "California")
 
@@ -126,7 +127,8 @@ class TestConsole(unittest.TestCase):
     def test_help_destroy(self, mock_stdout):
         """Test help destroy command"""
         self.console.onecmd("help destroy")
-        self.assertIn("Destroys an individual instance", mock_stdout.getvalue())
+        self.assertIn("Destroys an individual instance",
+                      mock_stdout.getvalue())
 
     @patch('sys.stdout', new_callable=io.StringIO)
     def test_help_all(self, mock_stdout):
@@ -157,7 +159,9 @@ class TestConsole(unittest.TestCase):
         """Test precmd method"""
         self.assertEqual(self.console.precmd("City.show()"), "show City")
         self.assertEqual(self.console.precmd("Place.all()"), "all Place")
-        self.assertEqual(self.console.precmd("State.update(\"id\", \"name\", \"value\")"), "update State id name value")
+        self.assertEqual(self.console.precmd
+                         ("State.update(\"id\", \"name\", \"value\")"),
+                         "update State id name value")
 
     @patch('sys.stdout', new_callable=io.StringIO)
     def test_postcmd(self, mock_stdout):
@@ -168,8 +172,8 @@ class TestConsole(unittest.TestCase):
     @patch('sys.stdout', new_callable=io.StringIO)
     def test_precmd_invalid_command(self, mock_stdout):
         """Test precmd method with invalid command"""
-        self.assertEqual(self.console.precmd("InvalidCommand"), "InvalidCommand")
-
+        self.assertEqual(self.console.precmd("InvalidCommand"),
+                         "InvalidCommand")
 
 
 if __name__ == '__main__':
