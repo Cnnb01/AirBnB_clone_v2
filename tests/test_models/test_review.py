@@ -29,4 +29,5 @@ class test_review(test_basemodel):
         self.assertEqual(type(new.text), str)
 
     def test_table_name(self):
+        """test tablename"""
         self.assertEqual(Review.__tablename__, 'reviews')
