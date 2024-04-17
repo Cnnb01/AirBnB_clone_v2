@@ -22,3 +22,6 @@ class test_City(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.name), str)
+
+    def test_table_name(self):
+        self.assertEqual(Review.__tablename__, 'cities')
