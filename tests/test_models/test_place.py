@@ -61,9 +61,35 @@ class test_Place(test_basemodel):
     def test_longitude(self):
         """ """
         new = self.value()
-        self.assertEqual(type(new.latitude), float)
+        self.assertEqual(type(new.longitude), float)
 
     def test_amenity_ids(self):
         """ """
         new = self.value()
         self.assertEqual(type(new.amenity_ids), list)
+
+    def test_reviews_relationship(self):
+        """Test the relationship between Place and Review"""
+        place = self.value()
+        review1 = Review(place_id=place.id)
+        review2 = Review(place_id=place.id)
+        self.assertIn(review1, place.reviews)
+        self.assertIn(review2, place.reviews)
+
+    def test_amenities_relationship(self):
+        """Test the relationship between Place and Amenity"""
+        place = self.value()
+        amenity1 = Amenity()
+        amenity2 = Amenity()
+        place.amenities.append(amenity1)
+        place.amenities.append(amenity2)
+        self.assertIn(amenity1, place.amenities)
+        self.assertIn(amenity2, place.amenities)
+
+    def test_amenities_setter(self):
+        """Test the amenities setter method"""
+        place = self.value()
+        amenity = Amenity()
+        place.amenities = amenity
+        self.assertIn(amenity, place.amenities)
+        
