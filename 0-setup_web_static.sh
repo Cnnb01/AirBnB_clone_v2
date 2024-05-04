@@ -19,7 +19,7 @@ echo "<html>
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # Give ownership of the /data/ folder to the ubuntu user AND group; This should be recursive;
-sudo chmod -R ubuntu:ubuntu /data/
+sudo chown -R ubuntu:ubuntu /data/
 
 # Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static (ex: https://mydomainname.tech/hbnb_static). Don’t forget to 
 echo "server{
