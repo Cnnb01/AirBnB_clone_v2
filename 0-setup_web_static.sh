@@ -9,8 +9,14 @@ do
     ssh ubuntu@"$s" 'sudo apt update -y && sudo apt install nginx -y'
 
 # Create the folders and file /data/web_static/releases/test/index.html if doesn’t exist(with simple content, to test your Nginx configuration)
-    ssh ubuntu@"$s" 'mkdir -p /data/web_static/releases/test/ && touch /data/web_static/releases/test/index.html'
-
+    ssh ubuntu@"$s" 'mkdir -p /data/web_static/releases/test/'
+	echo "<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>" >> /data/web_static/releases/test/index.html
 # Create a symbolic link /data/web_static/current linked to the /data/web_static/releases/test/ folder; If symbolic link already exists, it should be deleted and recreated every time the script is ran.
     ssh ubuntu@"$s" 'sudo ln -sf /data/web_static/releases/test/ /data/web_static/current'
 
@@ -25,5 +31,4 @@ do
     }" | sudo tee /etc/nginx/sites-available/default > /dev/null'
 
 # restart Nginx after updating the configuration
-    ssh ubuntu@"$s" 'sudo service nginx restart'
-done
+sudo service nginx restart
