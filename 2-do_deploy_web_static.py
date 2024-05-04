@@ -2,7 +2,7 @@
 """ a Fabric script (based on the file 1-pack_web_static.py)
 that distributes an archive to your web servers"""
 
-from fabric.api import local, run, put
+from fabric.api import *
 import os
 from datetime import datetime
 
