@@ -32,14 +32,30 @@ def do_deploy(archive_path):
     """Deploy the archive to web servers"""
     if (archive_path is None):
         return False
-# extracts the filename from the provided path.
+# extracts the filename and folder name
     filename = os.path.basename(archive_path)
-    without_extension, _ = os.path.splitext(filename)
+    folder_name = os.path.splitext(filename)[0]
 
-    put(archive_path, '/tmp/')
-    run(f'tar -xzf {filename} -C '
-        f'/data/web_static/releases/{without_extension}')
-    run(f'rm --delete {filename}')
-    run(f'sudo ln -sf /data/web_static/releases/{without_extension} '
-        f'/data/web_static/current')
+    remote_tmp_path = f'/tmp/{filename}'
+    remote_extract_path = f'/data/web_static/releases/{folder_name}'
+
+    # Upload the archive to /tmp/ directory
+    put(archive_path, remote_tmp_path)
+
+    # Create the release directory
+    run(f'mkdir -p {remote_extract_path}')
+
+    # Extract the archive
+    run(f'tar -xzf {remote_tmp_path} -C {remote_extract_path}')
+
+    # Delete the uploaded archive
+    run(f'rm {remote_tmp_path}')
+
+    # Move contents to proper location and remove old directory
+    run(f'mv -f {remote_extract_path}/web_static/* {remote_extract_path}/')
+    run(f'rm -rf {remote_extract_path}/web_static')
+
+    # Update symbolic link
+    run(f'rm -rf /data/web_static/current')
+    run(f'ln -s {remote_extract_path} /data/web_static/current')
     return True
