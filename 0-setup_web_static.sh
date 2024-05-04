@@ -6,7 +6,8 @@ sudo apt update -y
 sudo apt install nginx -y
 
 # Create the folders and file /data/web_static/releases/test/index.html if doesn’t exist(with simple content, to test your Nginx configuration)
-mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared/
+sudo mkdir -p /data/web_static/releases/test/
 echo "<html>
   <head>
   </head>
