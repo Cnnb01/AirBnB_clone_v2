@@ -2,7 +2,8 @@
 # a Bash script that sets up your web servers for the deployment
 
 # Install Nginx if it not already installed
-sudo apt update -y && sudo apt install nginx -y
+sudo apt update -y 
+sudo apt install nginx -y
 
 # Create the folders and file /data/web_static/releases/test/index.html if doesn’t exist(with simple content, to test your Nginx configuration)
 mkdir -p /data/web_static/releases/test/
