@@ -37,15 +37,9 @@ def do_deploy(archive_path):
     without_extension, _ = os.path.splitext(filename)
 
     put(archive_path, '/tmp/')
-
-    # Extract the archive
     run(f'tar -xzf {filename} -C '
         f'/data/web_static/releases/{without_extension}')
-    
-    # Delete the uploaded archive
     run(f'rm --delete {filename}')
-
-    # symbolic link
     run(f'sudo ln -sf /data/web_static/releases/{without_extension} '
         f'/data/web_static/current')
     return True
