@@ -2,7 +2,7 @@
 """ a Fabric script (based on the file 1-pack_web_static.py)
 that distributes an archive to your web servers"""
 
-from fabric.api import put, run, local
+from fabric.api import *
 import os
 from datetime import datetime
 
@@ -16,14 +16,14 @@ def do_pack():
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
 
-    archive_filename = f"versions/web_static_{timestamp}.tgz"
+    archive_path = f"versions/web_static_{timestamp}.tgz"
 
     local('mkdir -p versions')
 
-    created_archive = local(f"tar cf {archive_filename} web_static")
+    created_archive = local(f"tar cf {archive_path} web_static")
 
     if created_archive:
-        return archive_filename
+        return archive_path
     else:
         return None
 
