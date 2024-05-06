@@ -12,13 +12,17 @@ env.user = "ubuntu"
 
 def do_deploy(archive_path):
     """Deploy the archive to web servers"""
-    if (archive_path is None):
+    if not os.path.exists(archive_path):
         return False
 # extracts the filename from the provided path.
     filename = os.path.basename(archive_path)
     without_extension, _ = os.path.splitext(filename)
 
     put(archive_path, '/tmp/')
+
+    # Delete the existing symbolic link /data/web_static/current if it exists
+    run('rm -f /data/web_static/current')
+
     run(f'tar -xzf {filename} -C '
         f'/data/web_static/releases/{without_extension}')
     run(f'rm --delete {filename}')
