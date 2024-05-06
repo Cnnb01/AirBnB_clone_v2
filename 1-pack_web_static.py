@@ -15,7 +15,7 @@ def do_pack():
 
     local('mkdir -p versions')
 
-    created_archive = local(f"tar cf {archive_filename} web_static")
+    created_archive = local(f"tar -cvzf {archive_filename} web_static")
 
     if created_archive:
         return archive_filename
