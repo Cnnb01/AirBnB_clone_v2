@@ -12,20 +12,19 @@ env.user = "ubuntu"
 
 def do_deploy(archive_path):
     """Deploy the archive to web servers"""
-    if not os.path.exists(archive_path):
-        return False
-# extracts the filename from the provided path.
-    filename = os.path.basename(archive_path)
-    without_extension, _ = os.path.splitext(filename)
+    if os.path.exists(archive_path):
+        archive = archive_path.split('/')[1]
+        a_path = "/tmp/{}".format(archive)
+        folder = archive.split('.')[0]
+        f_path = "/data/web_static/releases/{}/".format(folder)
 
-    put(archive_path, '/tmp/')
-
-    # Delete the existing symbolic link /data/web_static/current if it exists
-    run('rm -f /data/web_static/current')
-
-    run(f'tar -xzf {filename} -C '
-        f'/data/web_static/releases/{without_extension}')
-    run(f'rm --delete {filename}')
-    run(f'sudo ln -sf /data/web_static/releases/{without_extension} '
-        f'/data/web_static/current')
-    return True
+        put(archive_path, a_path)
+        run("mkdir -p {}".format(f_path))
+        run("tar -xzf {} -C {}".format(a_path, f_path))
+        run("rm {}".format(a_path))
+        run("mv -f {}web_static/* {}".format(f_path, f_path))
+        run("rm -rf {}web_static".format(f_path))
+        run("rm -rf /data/web_static/current")
+        run("ln -s {} /data/web_static/current".format(f_path))
+        return True
+    return False
