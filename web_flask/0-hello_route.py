@@ -10,12 +10,12 @@ from flask import Flask
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/", strict_slashes=False)
 def hello_world():
     """
     A view function that returns a simple HTML response.
     """
-    return "<p>Hello, HBNB!</p>"
+    return "Hello, HBNB!"
 
 
 if __name__ == '__main__':
